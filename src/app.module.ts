@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { OpenAiModule } from './open-ai/open-ai.module';
 import { ConfigModule } from '@nestjs/config';
 import * as path from 'path';
+import { GoogleAiModule } from './google-ai/google-ai.module';
 
 let envFile = '.env.local';
 switch (process.env.NODE_ENV) {
@@ -23,6 +24,7 @@ switch (process.env.NODE_ENV) {
             cache: true,
         }),
         OpenAiModule,
+        GoogleAiModule,
     ],
     controllers: [AppController],
     providers: [AppService],
