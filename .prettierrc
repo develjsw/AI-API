@@ -1,0 +1,8 @@
+{
+  "semi": true,              // 명령문 끝에 세미콜론 붙이기
+  "tabWidth": 4,             // 들여쓰기 시 공백 4칸 사용
+  "useTabs": false,          // 탭 문자 대신 공백 사용
+  "singleQuote": true,       // 문자열에 작은따옴표 사용
+  "trailingComma": "all",    // 가능할 경우 항상 후행 쉼표 사용
+  "printWidth": 100          // 자동 줄바꿈을 위한 최대 줄 길이
+}
