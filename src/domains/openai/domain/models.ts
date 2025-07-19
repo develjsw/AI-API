@@ -1,0 +1,23 @@
+export enum GptAiModel {
+    GPT_3_5_TURBO = 'gpt-3.5-turbo',
+    GPT_4 = 'gpt-4o',
+    GPT_4_TURBO = 'gpt-4-turbo',
+}
+
+export enum RoleInstructions {
+    '역사선생님' = '너는 역사 선생님이야. 사용자가 질문하면 대한민국 기준으로 역사에 대한 답변을 해줘.',
+    '개발자' = '너는 개발자야. 개발용어, 기술적인 내용을 포함해서 질문에 답해줘.',
+    '디자이너' = '너는 디자이너야. 디자인 감각을 가지고 내용에 답해줘.',
+}
+
+export enum ToneInstructions {
+    '친근한말투' = '~해볼까?, ~하는게어때?, ~해보자 등의 말투를 사용해줘.',
+    '시크한말투' = '~해, ~하지마, ~안 돼 등의 말투를 사용해줘.',
+    '공손한말투' = '~합니다, ~입니다, ~할까요? 등의 말투를 사용해줘.',
+}
+
+export interface OpenAiAgent {
+    name: string;
+    instructions: string;
+    model: GptAiModel;
+}
