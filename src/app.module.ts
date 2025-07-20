@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { AiModule } from './ai/ai.module';
 import * as path from 'path';
 
 let envFile = '.env.local';
@@ -21,6 +22,7 @@ switch (process.env.NODE_ENV) {
             isGlobal: true,
             cache: true,
         }),
+        AiModule,
     ],
     controllers: [AppController],
     providers: [AppService],
