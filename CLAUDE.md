@@ -1,90 +1,49 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+이 문서는 Claude 코드 도우미가 이 프로젝트에서 일관된 스타일과 아키텍처를 유지할 수 있도록 안내합니다.
 
-## Development Commands
+---
 
-### Package Management
-- `pnpm install` - Install dependencies
-- `pnpm start:dev` - Run development server (port 1234)
-- `pnpm start:prod` - Run production server
-- `pnpm build` - Build the project
+## ✅ 프로젝트 개요
+- **도메인**: 채용 플랫폼
+- **아키텍처**: Layered Architecture
+- **ORM**: Prisma 사용
+- **순환 참조**: 순환 참조 발생 시 별도 공유 모듈(`@shared` 등)을 생성하여 분리 관리
 
-### Code Quality
-- `pnpm lint` - Lint and fix TypeScript files
-- `pnpm format` - Format code with Prettier
+---
 
-### Testing
-- `pnpm test` - Run unit tests
-- `pnpm test:watch` - Run tests in watch mode
-- `pnpm test:cov` - Run tests with coverage
-- `pnpm test:e2e` - Run end-to-end tests
-- `pnpm test:debug` - Run tests in debug mode
+## ✅ 코드 스타일 가이드
 
-## Architecture Overview
+### 📁 레이어별 네이밍 규칙
+- `Controller`, `Service` 계층:
+    - 데이터 조회: `get`으로 시작 (`getApplicantList`, `getJobDetail`)
+- `Repository` 계층:
+    - 조회: `find` (`findById`, `findByEmail`)
+    - 생성: `insert` (`insertApplicant`)
+    - 수정: `update` (`updateJobStatus`)
+    - 삭제: `delete` (`deleteResumeById`)
 
-This is a **NestJS AI API** demonstrating **Domain-Driven Design (DDD)** implementation alongside legacy architecture patterns. The project integrates multiple AI providers (OpenAI and Google AI) and serves as an experimental platform for AI tool utilization in real workflows.
+### 🧹 코드 포맷팅
+- `Prettier` 사용
+    - `.prettierrc` 설정에 따름
+    - 파일 저장 시 자동 포맷팅 적용 권장
 
-### Core Structure
+### 🚫 금지 사항
+- `any` 타입 사용 금지 (구체적인 타입 또는 `unknown` 사용 권장)
+- 암묵적 타입 추론보다는 명시적 타입 선언 지향
 
-**Main Application:**
-- Entry point at `src/main.ts` (port 1234)
-- Global validation pipes with transformation enabled
-- Environment-based configuration (development, production, local)
+---
 
-**DDD Implementation (`src/ai/`):**
-- **Domain Layer** (`/domain/`): Entities, value objects, repository interfaces
-- **Application Layer** (`/application/use-cases/`): Business logic use cases
-- **Infrastructure Layer** (`/infrastructure/providers/`): External service implementations  
-- **Presentation Layer** (`/presentation/`): Controllers and DTOs
+## 🔁 순환 참조 방지 전략
+- 도메인 간 직접 참조 대신, `@shared` 또는 `@common` 디렉터리로 분리하여 공통 타입/로직 관리
+- 예: `src/shared/dto/common.dto.ts`
 
-**Legacy Modules:**
-- `src/open-ai/` and `src/google-ai/` - Traditional service-controller pattern for comparison
+---
 
-### Key Patterns
+## 📦 기타 규칙
+- `Exception` 및 `ValidationPipe`, `Interceptor`는 전역 또는 공용 모듈에서 관리
+- `DTO`는 `@nestjs/swagger` 사용하여 API 명세 작성
 
-**Dependency Injection:**
-- Token-based injection for repositories (`'GoogleAiRepository'`, `'OpenAiRepository'`)
-- Clean interface/implementation separation
+---
 
-**Environment Variables Required:**
-- `GOOGLE_AI_API_KEY` - Google AI API access
-- `OPEN_AI_API_KEY` - OpenAI API access  
-- `OPEN_AI_API_HOST` - OpenAI API endpoint
-
-**Validation Constraints:**
-- Questions: 1-1000 characters
-- Content generation: 1-2000 characters
-- Text summarization: 1-5000 characters
-
-**Error Handling:**
-- Korean language error messages for user-facing responses
-- Structured error responses with InternalServerErrorException
-
-### AI Provider Integration
-
-**Google AI (Gemini):**
-- Uses `@google/genai` SDK
-- Supports multiple Gemini models (2.5 Pro, 2.5 Flash, 2.0 Flash)
-- Content generation through structured requests
-
-**OpenAI:**
-- Dual approach: HTTP API calls and `@openai/agents` SDK
-- Agent-based configuration with role/tone instructions
-- Supports GPT-3.5-turbo and GPT-4 models
-
-## Development Guidelines
-
-**Architecture Preference:**
-- Use DDD structure in `src/ai/` for new features
-- Follow established layering: Domain → Application → Infrastructure → Presentation
-
-**Code Conventions:**
-- Maintain Korean error messages for consistency
-- Respect existing DTO validation patterns
-- Use dependency injection with interface abstractions
-
-**Project Philosophy:**
-- Experimental platform for AI tool integration
-- Balance between AI assistance and human judgment
-- Focus on practical workflow enhancement over theoretical implementation
+이 가이드는 Claude가 자동 리팩터링, 문맥 추천, 타입 제안 등을 할 때 참고하는 기준입니다.
