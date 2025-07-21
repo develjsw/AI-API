@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npx prisma:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npx nest build:*)",
+      "Bash(npx nest start:*)",
+      "Bash(node:*)",
+      "Bash(PORT=5000 node dist/main)"
+    ],
+    "deny": []
+  }
+}
