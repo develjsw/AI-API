@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  address     String?
+  website     String?
+  email       String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  jobs Job[]
+
+  @@map("companies")
+}
+
+model Job {
+  id            Int          @id @default(autoincrement())
+  title         String
+  description   String
+  requirements  String?
+  location      String?
+  salary        String?
+  employmentType String?
+  status        JobStatus    @default(ACTIVE)
+  deadline      DateTime?
+  companyId     Int
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  company      Company       @relation(fields: [companyId], references: [id])
+  applications Application[]
+
+  @@map("jobs")
+}
+
+model Applicant {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  resumes      Resume[]
+  applications Application[]
+
+  @@map("applicants")
+}
+
+model Resume {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  skills      String?
+  experience  String?
+  education   String?
+  applicantId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applicant Applicant @relation(fields: [applicantId], references: [id])
+
+  @@map("resumes")
+}
+
+model Application {
+  id          Int               @id @default(autoincrement())
+  jobId       Int
+  applicantId Int
+  resumeId    Int?
+  coverLetter String?
+  status      ApplicationStatus @default(PENDING)
+  appliedAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  job       Job       @relation(fields: [jobId], references: [id])
+  applicant Applicant @relation(fields: [applicantId], references: [id])
+
+  @@unique([jobId, applicantId])
+  @@map("applications")
+}
+
+enum JobStatus {
+  ACTIVE
+  INACTIVE
+  CLOSED
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  INTERVIEW
+  ACCEPTED
+  REJECTED
+}
