@@ -8,7 +8,15 @@
       "Bash(npx nest build:*)",
       "Bash(npx nest start:*)",
       "Bash(node:*)",
-      "Bash(PORT=5000 node dist/main)"
+      "Bash(PORT=5000 node dist/main)",
+      "Bash(npm create:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run start:dev:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(npm run build:*)",
+      "Bash(npm run start:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }
